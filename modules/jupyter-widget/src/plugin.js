@@ -1,4 +1,4 @@
-import {Application, IPlugin} from '@phosphor/application';
+// import {Application, IPlugin} from '@phosphor/application';
 
 import {IJupyterWidgetRegistry} from '@jupyter-widgets/base';
 

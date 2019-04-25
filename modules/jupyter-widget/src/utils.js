@@ -107,4 +107,3 @@ function setMapProps(map, props) {
 }
 
 export {createDeckScaffold, loadCss, hideMapboxCSSWarning, setMapProps};
-

@@ -1,13 +1,14 @@
+/* global document */
 /**
  * Gets CSS from a given URL and appends it to the document head
  * @param url URL of CSS page
  */
 function loadCss(url) {
-  let link = document.createElement('link'); //eslint-disable-line
+  const link = document.createElement('link');
   link.type = 'text/css';
   link.rel = 'stylesheet';
   link.href = url;
-  document.getElementsByTagName('head')[0].appendChild(link); //eslint-disable-line
+  document.getElementsByTagName('head')[0].appendChild(link);
 }
 
 /**
@@ -15,10 +16,10 @@ function loadCss(url) {
  * @param idName ID attribute of div
  * @return div object for appending to the document
  */
-function createWidgetDiv(idName) {
-  let div = document.createElement('div'); //eslint-disable-line
-  div.style.width = '500px';
-  div.style.height = '500px';
+function createWidgetDiv(idName, width = 500, height = 500) {
+  const div = document.createElement('div');
+  div.style.width = `${width}px`;
+  div.style.height = `${height}px`;
   div.id = idName;
   return div;
 }
@@ -29,7 +30,7 @@ function createWidgetDiv(idName) {
  * @return canvas canvas for appending
  */
 function createCanvas(idName) {
-  let canvas = document.createElement('canvas'); //eslint-disable-line
+  const canvas = document.createElement('canvas');
   Object.assign(canvas.style, {
     width: '100%',
     height: '100%',
@@ -46,7 +47,7 @@ function createCanvas(idName) {
  * @return div object for appending to the document
  */
 function createMapDiv(idName) {
-  let div = document.createElement('div'); //eslint-disable-line
+  const div = document.createElement('div');
   Object.assign(div.style, {
     'pointer-events': 'none',
     height: '100%',
@@ -62,7 +63,7 @@ function createMapDiv(idName) {
  * Hides a warning in the mapbox-gl.js library from surfacing in the notebook as text.
  */
 function hideMapboxCSSWarning() {
-  let missingCssWarning = document.getElementsByClassName('mapboxgl-missing-css')[0]; //eslint-disable-line
+  const missingCssWarning = document.getElementsByClassName('mapboxgl-missing-css')[0];
   if (missingCssWarning) {
     missingCssWarning.style.display = 'none';
   }
@@ -72,13 +73,15 @@ function hideMapboxCSSWarning() {
  * Appends all DOM elements for the deck.gl widget at the specified root node
  * @param rootElement ID attribute of div
  */
-function createDeckScaffold(rootElement) {
+function createDeckScaffold(rootElement, width = 500, height = 500) {
   const mapNode = createMapDiv('map');
   const canvasNode = createCanvas('deck-map-container');
-  const mapWrapperNode = createWidgetDiv('deck-map-wrapper');
+  const mapWrapperNode = createWidgetDiv('deck-map-wrapper', width, height);
   mapWrapperNode.appendChild(canvasNode);
   mapWrapperNode.appendChild(mapNode);
-  rootElement.appendChild(createWidgetDiv('deck-container')).appendChild(mapWrapperNode);
+  rootElement
+    .appendChild(createWidgetDiv('deck-container', width, height))
+    .appendChild(mapWrapperNode);
 }
 
 /**
@@ -92,7 +95,7 @@ function setMapProps(map, props) {
     const {viewState} = props;
     map.jumpTo({
       center: [viewState.longitude, viewState.latitude],
-      zoom: viewState.zoom || 10,
+      zoom: viewState.zoom !== null ? viewState.zoom : 10,
       bearing: viewState.bearing || 0,
       pitch: viewState.pitch || 0
     });

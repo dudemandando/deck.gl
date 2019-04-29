@@ -10,7 +10,7 @@ const deckglLayers = require('@deck.gl/layers');
 const deckAggregationLayers = require('@deck.gl/aggregation-layers');
 const deckJson = require('@deck.gl/json');
 
-const MAPBOX_CSS_URL = 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css';
+const MAPBOX_CSS_URL = 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.1/mapbox-gl.css';
 const MAPBOX_TILE_URL = 'mapbox://styles/mapbox/light-v9';
 
 export class DeckGLModel extends DOMWidgetModel {
@@ -57,7 +57,8 @@ export class DeckGLView extends DOMWidgetView {
     super.render();
     this.listenTo(this.model, 'change:json_input', this.value_changed);
     loadCss(MAPBOX_CSS_URL);
-    createDeckScaffold(this.el);
+    const [width, height] = [this.model.get('width'), this.model.get('height')];
+    createDeckScaffold(this.el, width, height);
   }
 
   _onViewStateChange({viewState}) {
